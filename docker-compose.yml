@@ -1,0 +1,41 @@
+
+
+services:
+  # Base de Datos (MongoDB)
+  mongo:
+    image: mongo:latest
+    container_name: ing360_mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  # Backend (Django)
+  backend:
+    build: ./backend
+    container_name: ing360_backend
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./backend:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mongo
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/ing360_db
+
+  # Frontend (Nuxt/Vue)
+  frontend:
+    build: ./frontend
+    container_name: ing360_frontend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+    environment:
+      - NUXT_HOST=0.0.0.0
+      - NUXT_PORT=3000
+
+volumes:
+  mongo_data:

@@ -1,0 +1,15 @@
+{
+  "name": "ingenieria-360-frontend",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "devDependencies": {
+    "nuxt": "^3.8.0",
+    "vue": "^3.3.0"
+  }
+}

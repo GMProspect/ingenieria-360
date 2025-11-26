@@ -23,19 +23,8 @@
 
       <hr>
 
-      <!-- Constructor de Especificaciones Dinámicas -->
-      <h3>🛠️ Especificaciones Técnicas</h3>
-      <p style="font-size: 0.9em; color: #666;">Agrega las características que quieras. No hay límites.</p>
-
-      <div v-for="(spec, index) in dynamicSpecs" :key="index" style="display: flex; gap: 10px; margin-bottom: 10px;">
-        <input v-model="spec.key" placeholder="Nombre (Ej: Voltaje)" style="flex: 1; padding: 5px;">
-        <input v-model="spec.value" placeholder="Valor (Ej: 220V)" style="flex: 1; padding: 5px;">
-        <button type="button" @click="removeSpec(index)" style="background: #ff4444; color: white; border: none; padding: 5px 10px; cursor: pointer;">X</button>
-      </div>
-
-      <button type="button" @click="addSpec" style="background: #28a745; color: white; border: none; padding: 5px 10px; cursor: pointer; margin-bottom: 20px;">
-        + Agregar Característica
-      </button>
+      <!-- Componente Reutilizable -->
+      <SpecBuilder v-model="dynamicSpecs" />
 
       <hr>
 
@@ -49,6 +38,7 @@
 <script setup>
 import axios from 'axios';
 import { useRouter } from 'vue-router';
+// Nuxt auto-imports components in /components, so no explicit import needed for SpecBuilder
 
 const router = useRouter();
 
@@ -60,18 +50,10 @@ const form = ref({
   fecha_adquisicion: '',
 });
 
-// Estado para las especificaciones dinámicas (Array temporal)
+// Estado para las especificaciones dinámicas
 const dynamicSpecs = ref([
-  { key: '', value: '' } // Empezamos con una fila vacía
+  { key: '', value: '' }
 ]);
-
-const addSpec = () => {
-  dynamicSpecs.value.push({ key: '', value: '' });
-};
-
-const removeSpec = (index) => {
-  dynamicSpecs.value.splice(index, 1);
-};
 
 const guardarEquipo = async () => {
   try {

@@ -1,85 +1,48 @@
 <template>
-  <div style="font-family: sans-serif; padding: 20px; max-width: 600px; margin: 0 auto;">
-    <h1>➕ Agregar Nuevo Equipo</h1>
+  <div class="page-container">
+    <NuxtLink to="/equipos" class="back-link">← Volver al Inventario</NuxtLink>
+    <h1 class="title">➕ Agregar Nuevo Equipo</h1>
     
-    <form @submit.prevent="guardarEquipo">
-      <!-- Datos Básicos -->
-      <div style="margin-bottom: 15px;">
-        <label>Nombre:</label><br>
-        <input v-model="form.nombre" type="text" required style="width: 100%; padding: 8px;">
-      </div>
-      <div style="margin-bottom: 15px;">
-        <label>Marca:</label><br>
-        <input v-model="form.marca" type="text" required style="width: 100%; padding: 8px;">
-      </div>
-      <div style="margin-bottom: 15px;">
-        <label>Modelo:</label><br>
-        <input v-model="form.modelo" type="text" required style="width: 100%; padding: 8px;">
-      </div>
-      <div style="margin-bottom: 15px;">
-        <label>Fecha Adquisición:</label><br>
-        <input v-model="form.fecha_adquisicion" type="date" required style="width: 100%; padding: 8px;">
-      </div>
-
-      <hr>
-
-      <!-- Componente Reutilizable -->
-      <SpecBuilder v-model="dynamicSpecs" />
-
-      <hr>
-
-      <button type="submit" style="background: #007bff; color: white; padding: 10px 20px; border: none; font-size: 1.1em; cursor: pointer; width: 100%;">
-        💾 Guardar Equipo
-      </button>
-    </form>
+    <EquipoForm 
+      @submit="guardarEquipo" 
+      :loading="loading"
+    />
   </div>
 </template>
 
 <script setup>
 import axios from 'axios';
 import { useRouter } from 'vue-router';
-// Nuxt auto-imports components in /components, so no explicit import needed for SpecBuilder
 
 const router = useRouter();
+const loading = ref(false);
 
-// Estado del formulario básico
-const form = ref({
-  nombre: '',
-  marca: '',
-  modelo: '',
-  fecha_adquisicion: '',
-});
-
-// Estado para las especificaciones dinámicas
-const dynamicSpecs = ref([
-  { key: '', value: '' }
-]);
-
-const guardarEquipo = async () => {
+const guardarEquipo = async (formData) => {
+  loading.value = true;
   try {
-    // 1. Convertir el Array de specs a un Objeto JSON real
-    const especificacionesJSON = {};
-    dynamicSpecs.value.forEach(spec => {
-      if (spec.key && spec.value) {
-        especificacionesJSON[spec.key] = spec.value;
-      }
-    });
-
-    // 2. Preparar el payload final
-    const payload = {
-      ...form.value,
-      especificaciones: especificacionesJSON
-    };
-
-    // 3. Enviar al Backend
-    await axios.post('http://localhost:8000/api/equipos/', payload);
-    
+    await axios.post('http://localhost:8000/api/equipos/', formData);
     alert('¡Equipo guardado con éxito!');
-    router.push('/equipos'); // Volver a la lista
-
+    router.push('/equipos');
   } catch (error) {
     console.error('Error guardando:', error);
     alert('Error al guardar. Revisa la consola.');
+  } finally {
+    loading.value = false;
   }
 };
 </script>
+
+<style scoped>
+.page-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 30px;
+  color: var(--primary);
+  text-shadow: 0 0 10px rgba(0, 242, 255, 0.3);
+}
+</style>

@@ -27,6 +27,10 @@
           <label>Fecha de Adquisición</label>
           <input v-model="form.fecha_adquisicion" type="date" required>
         </div>
+        <div class="input-group">
+          <label>Última Revisión</label>
+          <input v-model="form.ultima_revision" type="date">
+        </div>
       </div>
     </div>
 
@@ -71,6 +75,7 @@ const form = ref({
   modelo: '',
   cantidad: 1,
   fecha_adquisicion: '',
+  ultima_revision: '',
 });
 
 const dynamicSpecs = ref([
@@ -85,7 +90,8 @@ watch(() => props.initialData, (newData) => {
       marca: newData.marca || '',
       modelo: newData.modelo || '',
       cantidad: newData.cantidad || 1,
-      fecha_adquisicion: newData.fecha_adquisicion || ''
+      fecha_adquisicion: newData.fecha_adquisicion || '',
+      ultima_revision: newData.ultima_revision || ''
     };
 
     // Convertir objeto specs a array para el builder

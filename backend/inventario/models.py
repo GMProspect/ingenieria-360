@@ -10,6 +10,7 @@ class Equipo(models.Model):
     
     cantidad = models.IntegerField(default=1)
     fecha_adquisicion = models.DateField()
+    ultima_revision = models.DateField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

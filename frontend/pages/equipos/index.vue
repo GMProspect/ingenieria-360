@@ -35,6 +35,7 @@
             <th>Modelo</th>
             <th>Cant.</th>
             <th>Especificaciones</th>
+            <th>Estado</th>
             <th v-if="isAdmin">Acciones</th>
           </tr>
         </thead>
@@ -48,10 +49,16 @@
             </td>
             <td>
               <div class="specs-preview">
-                <span v-for="(val, key) in equipo.especificaciones" :key="key" class="spec-tag">
-                  {{ key }}: {{ val }}
+                <span v-for="(val, key) in Object.entries(equipo.especificaciones).slice(0, 3)" :key="key" class="spec-tag">
+                  {{ key[0] }}: {{ key[1] }}
+                </span>
+                <span v-if="Object.keys(equipo.especificaciones).length > 3" class="spec-more">
+                  +{{ Object.keys(equipo.especificaciones).length - 3 }} más...
                 </span>
               </div>
+            </td>
+            <td>
+              <span :class="['status-dot', getMaintenanceStatus(equipo)]" :title="getMaintenanceTitle(equipo)"></span>
             </td>
             <td v-if="isAdmin" class="actions-cell">
               <NuxtLink :to="`/equipos/${equipo.id}`" class="btn-icon edit" title="Editar">
@@ -125,6 +132,26 @@ const deleteEquipo = async (id) => {
     console.error(error);
     alert('Error al eliminar el equipo.');
   }
+};
+
+// Lógica de Mantenimiento
+const getMaintenanceStatus = (equipo) => {
+  const fechaBase = equipo.ultima_revision || equipo.fecha_adquisicion;
+  if (!fechaBase) return 'unknown';
+
+  const fecha = new Date(fechaBase);
+  const hoy = new Date();
+  const diffTime = Math.abs(hoy - fecha);
+  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+  return diffDays > 365 ? 'critical' : 'good';
+};
+
+const getMaintenanceTitle = (equipo) => {
+  const status = getMaintenanceStatus(equipo);
+  if (status === 'critical') return 'Requiere Mantenimiento (> 1 año)';
+  if (status === 'good') return 'Estado Óptimo';
+  return 'Sin información';
 };
 </script>
 
@@ -236,6 +263,40 @@ const deleteEquipo = async (id) => {
   border-radius: 4px;
   font-size: 0.8em;
   color: var(--text-muted);
+}
+
+.spec-more {
+  font-size: 0.8em;
+  color: var(--primary);
+  opacity: 0.8;
+  padding: 4px;
+}
+
+/* Status Dot */
+.status-dot {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: gray;
+  box-shadow: 0 0 5px rgba(255, 255, 255, 0.2);
+}
+
+.status-dot.good {
+  background: #00ff88;
+  box-shadow: 0 0 8px #00ff88;
+}
+
+.status-dot.critical {
+  background: #ff3333;
+  box-shadow: 0 0 8px #ff3333;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
 }
 
 /* Actions */

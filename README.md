@@ -31,7 +31,7 @@ Plataforma integral de herramientas para ingeniería de instrumentación y contr
 
 - **Frontend:** Nuxt 3 (Vue.js), CSS Variables (Cyber Theme).
 - **Backend:** Django REST Framework.
-- **Base de Datos:** MongoDB (vía Djongo).
+- **Base de Datos:** MongoDB (vía PyMongo) + SQLite (Sistema Django).
 - **Infraestructura:** Docker & Docker Compose.
 
 ## 🏁 Cómo Iniciar

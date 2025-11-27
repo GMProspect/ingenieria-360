@@ -3,3 +3,4 @@ djangorestframework
 pymongo==3.12.3
 django-cors-headers
 whitenoise
+gunicorn

@@ -8,6 +8,7 @@ class Equipo(models.Model):
     # Aquí está la magia de MongoDB: Guardamos un diccionario completo
     especificaciones = models.JSONField(default=dict, blank=True)
     
+    cantidad = models.IntegerField(default=1)
     fecha_adquisicion = models.DateField()
     created_at = models.DateTimeField(auto_now_add=True)
 

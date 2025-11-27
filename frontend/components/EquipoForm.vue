@@ -18,9 +18,15 @@
         </div>
       </div>
 
-      <div class="input-group">
-        <label>Fecha de Adquisición</label>
-        <input v-model="form.fecha_adquisicion" type="date" required>
+      <div class="row">
+        <div class="input-group">
+          <label>Cantidad</label>
+          <input v-model="form.cantidad" type="number" min="0" required placeholder="1">
+        </div>
+        <div class="input-group">
+          <label>Fecha de Adquisición</label>
+          <input v-model="form.fecha_adquisicion" type="date" required>
+        </div>
       </div>
     </div>
 
@@ -63,6 +69,7 @@ const form = ref({
   nombre: '',
   marca: '',
   modelo: '',
+  cantidad: 1,
   fecha_adquisicion: '',
 });
 
@@ -77,6 +84,7 @@ watch(() => props.initialData, (newData) => {
       nombre: newData.nombre || '',
       marca: newData.marca || '',
       modelo: newData.modelo || '',
+      cantidad: newData.cantidad || 1,
       fecha_adquisicion: newData.fecha_adquisicion || ''
     };
 

@@ -33,6 +33,7 @@
             <th>Nombre</th>
             <th>Marca</th>
             <th>Modelo</th>
+            <th>Cant.</th>
             <th>Especificaciones</th>
             <th v-if="isAdmin">Acciones</th>
           </tr>
@@ -42,6 +43,9 @@
             <td>{{ equipo.nombre }}</td>
             <td>{{ equipo.marca }}</td>
             <td>{{ equipo.modelo }}</td>
+            <td>
+              <span class="badge-qty">{{ equipo.cantidad || 1 }}</span>
+            </td>
             <td>
               <div class="specs-preview">
                 <span v-for="(val, key) in equipo.especificaciones" :key="key" class="spec-tag">
@@ -207,25 +211,6 @@ const deleteEquipo = async (id) => {
 }
 
 .cyber-table {
-  width: 100%;
-  border-collapse: collapse;
-  color: var(--text-main);
-}
-
-.cyber-table th {
-  background: rgba(0, 242, 255, 0.15);
-  color: var(--primary);
-  padding: 18px;
-  text-align: left;
-  font-weight: bold;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  font-size: 0.9em;
-}
-
-.cyber-table td {
-  padding: 15px 18px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   vertical-align: middle;
 }
 

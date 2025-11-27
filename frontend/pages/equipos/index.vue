@@ -49,8 +49,8 @@
             </td>
             <td>
               <div class="specs-preview">
-                <span v-for="(val, key) in Object.entries(equipo.especificaciones).slice(0, 3)" :key="key" class="spec-tag">
-                  {{ key[0] }}: {{ key[1] }}
+                <span v-for="entry in Object.entries(equipo.especificaciones).slice(0, 3)" :key="entry[0]" class="spec-tag">
+                  {{ entry[0] }}: {{ entry[1] }}
                 </span>
                 <span v-if="Object.keys(equipo.especificaciones).length > 3" class="spec-more">
                   +{{ Object.keys(equipo.especificaciones).length - 3 }} más...
@@ -228,7 +228,6 @@ const getMaintenanceTitle = (equipo) => {
   box-shadow: 0 0 20px rgba(0, 242, 255, 0.5);
   transform: translateY(-2px);
 }
-
 /* Table Styles */
 .table-container {
   overflow-x: auto;
@@ -238,6 +237,25 @@ const getMaintenanceTitle = (equipo) => {
 }
 
 .cyber-table {
+  width: 100%;
+  border-collapse: collapse;
+  color: var(--text-main);
+}
+
+.cyber-table th {
+  background: rgba(0, 242, 255, 0.15);
+  color: var(--primary);
+  padding: 18px;
+  text-align: left;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-size: 0.9em;
+}
+
+.cyber-table td {
+  padding: 15px 18px;
+  border-bottom: 1px solid rgba(0, 242, 255, 0.1); /* Visible separator */
   vertical-align: middle;
 }
 
@@ -246,7 +264,7 @@ const getMaintenanceTitle = (equipo) => {
 }
 
 .cyber-table tr:hover td {
-  background: rgba(255, 255, 255, 0.03);
+  background: rgba(0, 242, 255, 0.05); /* Subtle highlight */
 }
 
 /* Specs Tags */

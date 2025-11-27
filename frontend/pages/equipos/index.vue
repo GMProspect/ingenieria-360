@@ -48,13 +48,33 @@
               <span class="badge-qty">{{ equipo.cantidad || 1 }}</span>
             </td>
             <td>
+            <td>
               <div class="specs-preview">
-                <span v-for="entry in Object.entries(equipo.especificaciones).slice(0, 3)" :key="entry[0]" class="spec-tag">
+                <span 
+                  v-for="entry in (isExpanded(equipo.id) ? Object.entries(equipo.especificaciones) : Object.entries(equipo.especificaciones).slice(0, 3))" 
+                  :key="entry[0]" 
+                  class="spec-tag"
+                >
                   {{ entry[0] }}: {{ entry[1] }}
                 </span>
-                <span v-if="Object.keys(equipo.especificaciones).length > 3" class="spec-more">
+                
+                <!-- Botón Ver Más -->
+                <button 
+                  v-if="Object.keys(equipo.especificaciones).length > 3 && !isExpanded(equipo.id)" 
+                  @click="toggleExpand(equipo.id)"
+                  class="spec-more-btn"
+                >
                   +{{ Object.keys(equipo.especificaciones).length - 3 }} más...
-                </span>
+                </button>
+
+                <!-- Botón Ver Menos -->
+                <button 
+                  v-if="isExpanded(equipo.id)" 
+                  @click="toggleExpand(equipo.id)"
+                  class="spec-less-btn"
+                >
+                  Ver menos
+                </button>
               </div>
             </td>
             <td>
@@ -91,6 +111,19 @@ const isAdmin = useState('isAdmin');
 const equipos = ref([]);
 const loading = ref(true);
 const searchQuery = ref('');
+const expandedRows = ref(new Set());
+
+const toggleExpand = (id) => {
+  if (expandedRows.value.has(id)) {
+    expandedRows.value.delete(id);
+  } else {
+    expandedRows.value.add(id);
+  }
+  // Trigger reactivity for Set
+  expandedRows.value = new Set(expandedRows.value);
+};
+
+const isExpanded = (id) => expandedRows.value.has(id);
 
 // Cargar Equipos
 const fetchEquipos = async () => {
@@ -283,11 +316,20 @@ const getMaintenanceTitle = (equipo) => {
   color: var(--text-muted);
 }
 
-.spec-more {
+.spec-more-btn, .spec-less-btn {
+  background: none;
+  border: none;
   font-size: 0.8em;
   color: var(--primary);
-  opacity: 0.8;
+  cursor: pointer;
   padding: 4px;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+
+.spec-more-btn:hover, .spec-less-btn:hover {
+  opacity: 1;
+  text-decoration: underline;
 }
 
 /* Status Dot */

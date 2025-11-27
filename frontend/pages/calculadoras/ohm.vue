@@ -82,6 +82,9 @@
 <script setup>
 import axios from 'axios';
 
+const config = useRuntimeConfig();
+const apiBase = config.public.apiBase;
+
 const v = ref('');
 const i = ref('');
 const r = ref('');
@@ -153,7 +156,7 @@ const guardar = async () => {
       datos_entrada: { v: v.value, i: i.value, r: r.value },
       resultado: { v: v.value, i: i.value, r: r.value }
     };
-    await axios.post('http://localhost:8000/api/history/', payload);
+    await axios.post(`${apiBase}/api/history/`, payload);
     alert('¡Guardado!');
     etiqueta.value = '';
   } catch (error) {

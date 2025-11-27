@@ -32,6 +32,8 @@ import axios from 'axios';
 const route = useRoute();
 const router = useRouter();
 const id = route.params.id;
+const config = useRuntimeConfig();
+const apiBase = config.public.apiBase;
 
 const isAdmin = useState('isAdmin');
 const equipo = ref({});
@@ -40,7 +42,7 @@ const saving = ref(false);
 
 onMounted(async () => {
   try {
-    const response = await axios.get(`http://localhost:8000/api/equipos/${id}/`);
+    const response = await axios.get(`${apiBase}/api/equipos/${id}/`);
     equipo.value = response.data;
   } catch (error) {
     console.error('Error cargando equipo:', error);
@@ -59,7 +61,7 @@ const actualizarEquipo = async (formData) => {
   
   saving.value = true;
   try {
-    await axios.put(`http://localhost:8000/api/equipos/${id}/`, formData);
+    await axios.put(`${apiBase}/api/equipos/${id}/`, formData);
     alert('¡Equipo actualizado con éxito!');
     router.push('/equipos');
   } catch (error) {
@@ -74,7 +76,7 @@ const deleteEquipo = async () => {
   if (!confirm('¿Estás seguro de eliminar este equipo? Esta acción no se puede deshacer.')) return;
 
   try {
-    await axios.delete(`http://localhost:8000/api/equipos/${id}/`);
+    await axios.delete(`${apiBase}/api/equipos/${id}/`);
     alert('Equipo eliminado.');
     router.push('/equipos');
   } catch (error) {

@@ -106,6 +106,9 @@
 <script setup>
 import axios from 'axios';
 
+const config = useRuntimeConfig();
+const apiBase = config.public.apiBase;
+
 const lrv = ref(0);
 const urv = ref(100);
 const unit = ref('');
@@ -227,7 +230,7 @@ const guardar = async () => {
         percentage: rawPercentage.value 
       }
     };
-    await axios.post('http://localhost:8000/api/history/', payload);
+    await axios.post(`${apiBase}/api/history/`, payload);
     alert('¡Calibración guardada!');
     etiqueta.value = '';
   } catch (error) {

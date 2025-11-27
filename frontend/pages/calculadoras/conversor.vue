@@ -77,6 +77,9 @@
 <script setup>
 import axios from 'axios';
 
+const config = useRuntimeConfig();
+const apiBase = config.public.apiBase;
+
 // --- Configuración de Unidades ---
 const categories = {
   pressure: {
@@ -220,7 +223,7 @@ const guardar = async () => {
         val_to: valTo.value
       }
     };
-    await axios.post('http://localhost:8000/api/history/', payload);
+    await axios.post(`${apiBase}/api/history/`, payload);
     alert('¡Conversión guardada!');
     etiqueta.value = '';
   } catch (error) {

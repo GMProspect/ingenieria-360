@@ -106,6 +106,9 @@
 <script setup>
 import axios from 'axios';
 
+const config = useRuntimeConfig();
+const apiBase = config.public.apiBase;
+
 const isAdmin = useState('isAdmin');
 const equipos = ref([]);
 const loading = ref(true);
@@ -128,7 +131,7 @@ const isExpanded = (id) => expandedRows.value.has(id);
 const fetchEquipos = async () => {
   loading.value = true;
   try {
-    const response = await axios.get('http://localhost:8000/api/equipos/');
+    const response = await axios.get(`${apiBase}/api/equipos/`);
     equipos.value = response.data;
   } catch (error) {
     console.error('Error cargando equipos:', error);
@@ -157,7 +160,7 @@ const deleteEquipo = async (id) => {
   if (!confirm('¿Estás seguro de eliminar este equipo? Esta acción no se puede deshacer.')) return;
 
   try {
-    await axios.delete(`http://localhost:8000/api/equipos/${id}/`);
+    await axios.delete(`${apiBase}/api/equipos/${id}/`);
     // Eliminar localmente para feedback instantáneo
     equipos.value = equipos.value.filter(e => e.id !== id);
   } catch (error) {

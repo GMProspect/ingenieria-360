@@ -108,6 +108,9 @@
 <script setup>
 import axios from 'axios';
 
+const config = useRuntimeConfig();
+const apiBase = config.public.apiBase;
+
 const sensitivity = ref(200); // mV/mil standard
 const unit = ref('mils');
 const voltage = ref('');
@@ -206,7 +209,7 @@ const guardar = async () => {
         gap: gap.value 
       }
     };
-    await axios.post('http://localhost:8000/api/history/', payload);
+    await axios.post(`${apiBase}/api/history/`, payload);
     alert('¡Lectura guardada!');
     etiqueta.value = '';
   } catch (error) {

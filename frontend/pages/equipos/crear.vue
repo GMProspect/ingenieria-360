@@ -15,12 +15,14 @@ import axios from 'axios';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
+const config = useRuntimeConfig();
+const apiBase = config.public.apiBase;
 const loading = ref(false);
 
 const guardarEquipo = async (formData) => {
   loading.value = true;
   try {
-    await axios.post('http://localhost:8000/api/equipos/', formData);
+    await axios.post(`${apiBase}/api/equipos/`, formData);
     alert('¡Equipo guardado con éxito!');
     router.push('/equipos');
   } catch (error) {

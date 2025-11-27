@@ -6,12 +6,16 @@ import datetime
 
 class EquipoViewSet(viewsets.ViewSet):
     def list(self, request):
-        equipos = []
-        for doc in db.equipos.find():
-            doc['id'] = str(doc['_id'])
-            del doc['_id']
-            equipos.append(doc)
-        return Response(equipos)
+        try:
+            equipos = []
+            for doc in db.equipos.find():
+                doc['id'] = str(doc['_id'])
+                del doc['_id']
+                equipos.append(doc)
+            return Response(equipos)
+        except Exception as e:
+            print(f"Error connecting to DB: {e}")
+            return Response({'error': 'Database Connection Error', 'details': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def create(self, request):
         data = request.data

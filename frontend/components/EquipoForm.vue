@@ -31,8 +31,8 @@
 
     <div class="divider"></div>
 
-    <button type="submit" class="btn-submit" :disabled="loading">
-      {{ loading ? 'Guardando...' : (isEdit ? '💾 Actualizar Equipo' : '💾 Guardar Equipo') }}
+    <button type="submit" class="btn-submit" :disabled="loading || (isEdit && !isAdmin)">
+      {{ loading ? 'Guardando...' : (isEdit ? (isAdmin ? '💾 Actualizar Equipo' : '🔒 Solo Admin puede editar') : '💾 Guardar Equipo') }}
     </button>
   </form>
 </template>
@@ -48,6 +48,10 @@ const props = defineProps({
     default: false
   },
   loading: {
+    type: Boolean,
+    default: false
+  },
+  isAdmin: {
     type: Boolean,
     default: false
   }

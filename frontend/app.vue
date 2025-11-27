@@ -12,6 +12,9 @@
         <NuxtLink to="/calculadoras/ohm" class="nav-item">
           ⚡ Ley de Ohm
         </NuxtLink>
+        <button @click="toggleAdmin" class="nav-item btn-admin" :title="isAdmin ? 'Bloquear Admin' : 'Desbloquear Admin'">
+          {{ isAdmin ? '🔓' : '🔒' }}
+        </button>
       </div>
     </nav>
 
@@ -21,6 +24,25 @@
     </div>
   </div>
 </template>
+
+<script setup>
+const isAdmin = useState('isAdmin', () => false);
+
+const toggleAdmin = () => {
+  if (isAdmin.value) {
+    isAdmin.value = false;
+    alert('Modo Admin: BLOQUEADO 🔒');
+  } else {
+    const password = prompt('Ingrese contraseña de administrador:');
+    if (password === 'admin123') {
+      isAdmin.value = true;
+      alert('Modo Admin: DESBLOQUEADO 🔓');
+    } else {
+      alert('Contraseña incorrecta ❌');
+    }
+  }
+};
+</script>
 
 <style scoped>
 .app-container {
@@ -63,6 +85,14 @@
 .nav-item:hover {
   color: var(--primary);
   text-shadow: 0 0 8px var(--primary);
+}
+
+.btn-admin {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2em;
+  padding: 0 10px;
 }
 
 .router-link-active {

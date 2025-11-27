@@ -8,27 +8,35 @@
       <p>Cargando datos...</p>
     </div>
 
-    <EquipoForm 
-      v-else
-      :initialData="equipo"
-      :isEdit="true"
-      :loading="saving"
-      @submit="actualizarEquipo" 
-    />
+    <div v-else>
+      <EquipoForm 
+        :initialData="equipo"
+        :isEdit="true"
+        :loading="saving"
+        :isAdmin="isAdmin"
+        @submit="actualizarEquipo" 
+      />
+
+      <div class="actions-footer" v-if="isAdmin">
+        <button type="button" @click="deleteEquipo" class="btn-delete">
+          🗑️ Eliminar Equipo
+        </button>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
 import axios from 'axios';
-import { useRoute, useRouter } from 'vue-router';
 
 const route = useRoute();
 const router = useRouter();
+const id = route.params.id;
+
+const isAdmin = useState('isAdmin');
 const equipo = ref({});
 const loadingData = ref(true);
 const saving = ref(false);
-
-const id = route.params.id;
 
 onMounted(async () => {
   try {
@@ -44,6 +52,11 @@ onMounted(async () => {
 });
 
 const actualizarEquipo = async (formData) => {
+  if (!isAdmin.value) {
+    alert('No tienes permisos para editar.');
+    return;
+  }
+  
   saving.value = true;
   try {
     await axios.put(`http://localhost:8000/api/equipos/${id}/`, formData);
@@ -56,6 +69,19 @@ const actualizarEquipo = async (formData) => {
     saving.value = false;
   }
 };
+
+const deleteEquipo = async () => {
+  if (!confirm('¿Estás seguro de eliminar este equipo? Esta acción no se puede deshacer.')) return;
+
+  try {
+    await axios.delete(`http://localhost:8000/api/equipos/${id}/`);
+    alert('Equipo eliminado.');
+    router.push('/equipos');
+  } catch (error) {
+    console.error('Error eliminando:', error);
+    alert('Error al eliminar.');
+  }
+};
 </script>
 
 <style scoped>
@@ -63,6 +89,17 @@ const actualizarEquipo = async (formData) => {
   max-width: 800px;
   margin: 0 auto;
   padding: 20px;
+}
+
+.back-link {
+  color: var(--text-muted);
+  text-decoration: none;
+  margin-bottom: 20px;
+  display: inline-block;
+}
+
+.back-link:hover {
+  color: var(--primary);
 }
 
 .title {
@@ -86,6 +123,29 @@ const actualizarEquipo = async (formData) => {
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin: 0 auto 20px;
+}
+
+.actions-footer {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 20px;
+}
+
+.btn-delete {
+  background: rgba(255, 50, 50, 0.1);
+  color: #ff5555;
+  border: 1px solid #ff5555;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-delete:hover {
+  background: rgba(255, 50, 50, 0.2);
+  box-shadow: 0 0 10px rgba(255, 85, 85, 0.3);
 }
 
 @keyframes spin {

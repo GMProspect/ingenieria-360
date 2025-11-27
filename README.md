@@ -11,6 +11,7 @@ Plataforma integral de herramientas para ingeniería de instrumentación y contr
 - **Gestión Total:** CRUD completo de equipos (Crear, Leer, Actualizar, Borrar).
 - **Buscador en Tiempo Real:** Filtra por nombre, marca o modelo instantáneamente.
 - **Especificaciones Dinámicas:** Agrega campos técnicos personalizados sin límites.
+- **Modo Admin:** Protección de acciones críticas (Editar/Borrar) mediante contraseña local.
 
 ### 🧰 Herramientas de Cálculo
 1.  **Transmisor 4-20mA:**

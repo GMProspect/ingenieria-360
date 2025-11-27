@@ -14,7 +14,7 @@
         >
       </div>
       
-      <NuxtLink to="/equipos/crear" class="btn-add">
+      <NuxtLink v-if="isAdmin" to="/equipos/crear" class="btn-add">
         + Nuevo Equipo
       </NuxtLink>
     </div>
@@ -34,7 +34,7 @@
             <th>Marca</th>
             <th>Modelo</th>
             <th>Especificaciones</th>
-            <th>Acciones</th>
+            <th v-if="isAdmin">Acciones</th>
           </tr>
         </thead>
         <tbody>
@@ -49,7 +49,7 @@
                 </span>
               </div>
             </td>
-            <td class="actions-cell">
+            <td v-if="isAdmin" class="actions-cell">
               <NuxtLink :to="`/equipos/${equipo.id}`" class="btn-icon edit" title="Editar">
                 ✏️
               </NuxtLink>
@@ -76,6 +76,7 @@
 <script setup>
 import axios from 'axios';
 
+const isAdmin = useState('isAdmin');
 const equipos = ref([]);
 const loading = ref(true);
 const searchQuery = ref('');

@@ -17,3 +17,9 @@ RUN pip install --upgrade pip && pip install -r requirements.txt
 
 # Copiar el proyecto
 COPY . /app/
+
+# Exponer el puerto
+EXPOSE 8000
+
+# Comando para producción (usando Gunicorn)
+CMD ["gunicorn", "config.wsgi:application", "--bind", "0.0.0.0:8000"]

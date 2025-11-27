@@ -22,6 +22,11 @@
     <div class="page-content">
       <NuxtPage />
     </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>Desarrollado por <span class="author">Gustavo Matheus</span> | Ingeniería 360 © {{ new Date().getFullYear() }}</p>
+    </footer>
   </div>
 </template>
 
@@ -103,5 +108,20 @@ const toggleAdmin = () => {
 .page-content {
   flex: 1;
   padding: 20px;
+}
+
+.footer {
+  text-align: center;
+  padding: 20px;
+  background: rgba(10, 14, 23, 0.95);
+  border-top: 1px solid rgba(0, 242, 255, 0.1);
+  color: var(--text-muted);
+  font-size: 0.9em;
+}
+
+.author {
+  color: var(--primary);
+  font-weight: bold;
+  text-shadow: 0 0 5px rgba(0, 242, 255, 0.3);
 }
 </style>

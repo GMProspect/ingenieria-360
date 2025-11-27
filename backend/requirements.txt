@@ -1,5 +1,5 @@
-Django==3.2.25
+Django==4.2.17
 djangorestframework
-djongo
 pymongo==3.12.3
 django-cors-headers
+whitenoise

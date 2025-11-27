@@ -48,7 +48,6 @@
               <span class="badge-qty">{{ equipo.cantidad || 1 }}</span>
             </td>
             <td>
-            <td>
               <div class="specs-preview">
                 <span 
                   v-for="entry in (isExpanded(equipo.id) ? Object.entries(equipo.especificaciones) : Object.entries(equipo.especificaciones).slice(0, 3))" 
@@ -319,17 +318,20 @@ const getMaintenanceTitle = (equipo) => {
 .spec-more-btn, .spec-less-btn {
   background: none;
   border: none;
-  font-size: 0.8em;
+  font-size: 0.85em; /* Slightly larger */
   color: var(--primary);
   cursor: pointer;
-  padding: 4px;
-  opacity: 0.8;
-  transition: opacity 0.2s;
+  padding: 4px 8px; /* More padding for easier clicking */
+  margin-left: 5px;
+  text-decoration: underline; /* Always underlined to look like a link */
+  position: relative; /* Ensure z-index works */
+  z-index: 10;
+  font-weight: bold;
 }
 
 .spec-more-btn:hover, .spec-less-btn:hover {
-  opacity: 1;
-  text-decoration: underline;
+  color: white;
+  text-shadow: 0 0 5px var(--primary);
 }
 
 /* Status Dot */
